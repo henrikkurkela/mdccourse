@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +17,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
@@ -27,29 +35,81 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         setContentView(R.layout.activity_main);
 
         // data to populate the RecyclerView with
-        final ArrayList<String> animalNames = new ArrayList<>();
+        final ArrayList<AdapterData> newsItems = new ArrayList<>();
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this, animalNames);
+        adapter = new Adapter(this, newsItems);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_UUTISET.rss";
+        String url = "https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_UUTISET.rss";
 
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(), "Request Successful", Toast.LENGTH_LONG).show();
-                        animalNames.add("Horse");
-                        animalNames.add("Cow");
-                        animalNames.add("Camel");
-                        animalNames.add("Sheep");
-                        animalNames.add("Goat");
+
+                        String ITEM = "item";
+                        String TITLE = "title";
+                        String DESCRIPTION = "description";
+                        String LINK = "link";
+
+                        AdapterData item = new AdapterData("NULL", "NULL", "NULL");
+
+                        /* Parse the XML data according to https://developer.android.com/reference/org/xmlpull/v1/XmlPullParser
+                        and https://www.vogella.com/tutorials/AndroidXML/article.html */
+                        try {
+
+                            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                            factory.setNamespaceAware(true);
+                            XmlPullParser xpp = factory.newPullParser();
+
+                            xpp.setInput(new StringReader(response)); // pass input whatever xml you have
+                            int eventType = xpp.getEventType();
+                            while (eventType != XmlPullParser.END_DOCUMENT) {
+                                String name = null;
+                                if (eventType == XmlPullParser.START_DOCUMENT) {
+                                } else if (eventType == XmlPullParser.START_TAG) {
+                                    name = xpp.getName();
+                                    if (name.equalsIgnoreCase(ITEM)) {
+                                        Log.i("new item", "Create new item");
+                                        item = new AdapterData("NULL", "NULL", "NULL");
+                                    } else if (item.getHeadline() == "NULL" || item.getText() == "NULL" || item.getUrl() == "NULL") {
+                                        if (name.equalsIgnoreCase(LINK)) {
+                                            Log.i("Attribute", "setLink");
+                                            item.setUrl(xpp.nextText());
+                                        } else if (name.equalsIgnoreCase(DESCRIPTION)) {
+                                            Log.i("Attribute", "description");
+                                            item.setText(xpp.nextText().trim());
+                                        } else if (name.equalsIgnoreCase(TITLE)) {
+                                            Log.i("Attribute", "title");
+                                            item.setHeadline(xpp.nextText().trim());
+                                        }
+                                    }
+                                } else if (eventType == XmlPullParser.END_TAG) {
+                                    if (item.getHeadline() != "NULL" && item.getText() != "NULL" && item.getUrl() != "NULL") {
+                                        Log.i("Added", item.toString());
+                                        newsItems.add(item);
+                                        item = new AdapterData("NULL", "NULL", "NULL");;
+                                    }
+
+                                } else if (eventType == XmlPullParser.TEXT) {
+                                }
+                                eventType = xpp.next();
+                            }
+                            Log.d("", "End document");
+
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         adapter.notifyDataSetChanged();
                     }
                 },
@@ -67,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You clicked " + adapter.getItem(position).getHeadline() + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent displayNewsDetail = new Intent(getApplicationContext(), DetailActivity.class);
+        displayNewsDetail.putExtra("headline", adapter.getItem(position).getHeadline());
+        displayNewsDetail.putExtra("url", adapter.getItem(position).getUrl());
+        displayNewsDetail.putExtra("text", adapter.getItem(position).getText());
+        startActivity(displayNewsDetail);
     }
 }

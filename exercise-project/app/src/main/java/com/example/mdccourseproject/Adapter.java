@@ -12,12 +12,12 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<AdapterData> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    Adapter(Context context, List<String> data) {
+    Adapter(Context context, List<AdapterData> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -32,8 +32,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position);
-        holder.myTextView.setText(animal);
+        String headline = mData.get(position).getHeadline();
+        holder.myTextView.setText(headline);
     }
 
     // total number of rows
@@ -60,7 +60,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
+    AdapterData getItem(int id) {
         return mData.get(id);
     }
 
