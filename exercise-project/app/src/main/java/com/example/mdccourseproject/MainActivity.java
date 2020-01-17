@@ -1,11 +1,13 @@
 package com.example.mdccourseproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -39,9 +41,12 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new Adapter(this, newsItems);
         adapter.setClickListener(this);
+        DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(divider);
         recyclerView.setAdapter(adapter);
 
         // Instantiate the RequestQueue.
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
                         String ITEM = "item";
                         String TITLE = "title";
-                        String DESCRIPTION = "description";
+                        String DESCRIPTION = "encoded";
                         String LINK = "link";
 
                         AdapterData item = new AdapterData("NULL", "NULL", "NULL");
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                                             item.setUrl(xpp.nextText());
                                         } else if (name.equalsIgnoreCase(DESCRIPTION)) {
                                             Log.i("Attribute", "description");
-                                            item.setText(xpp.nextText().trim());
+                                            item.setText(Html.fromHtml(xpp.nextText(), Html.FROM_HTML_MODE_LEGACY).toString().trim());
                                         } else if (name.equalsIgnoreCase(TITLE)) {
                                             Log.i("Attribute", "title");
                                             item.setHeadline(xpp.nextText().trim());

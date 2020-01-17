@@ -16,13 +16,15 @@ public class DetailActivity extends AppCompatActivity {
 
         TextView headlineTextView = findViewById(R.id.headlineTextView);
         TextView textTextView = findViewById(R.id.textTextView);
+        TextView linkTextView = findViewById(R.id.linkTextView);
 
         Bundle extras = getIntent().getExtras();
         String headline = extras.getString("headline");
-        String url = extras.getString("url");
         String text = extras.getString("text");
+        String url = extras.getString("url");
 
         headlineTextView.setText(headline);
         textTextView.setText(text);
+        linkTextView.setText(url);
     }
 }
