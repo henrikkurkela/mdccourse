@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -50,10 +51,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         recyclerView.setAdapter(adapter);
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
+        final RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://feeds.yle.fi/uutiset/v1/majorHeadlines/YLE_UUTISET.rss";
 
-        StringRequest request = new StringRequest(Request.Method.GET, url,
+        /* Set up a Volley Request according to https://developer.android.com/training/volley/simple.html */
+        final StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -128,6 +130,17 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
         // Add the request to the RequestQueue.
         queue.add(request);
+
+        // Setup Floating Action Button for refreshing news items
+        FloatingActionButton fab = findViewById(R.id.refreshButton);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newsItems.clear();
+                queue.add(request);
+            }
+        });
     }
 
     @Override
@@ -138,5 +151,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         displayNewsDetail.putExtra("url", adapter.getItem(position).getUrl());
         displayNewsDetail.putExtra("text", adapter.getItem(position).getText());
         startActivity(displayNewsDetail);
+    }
+
+    public void refreshData() {
+
     }
 }
