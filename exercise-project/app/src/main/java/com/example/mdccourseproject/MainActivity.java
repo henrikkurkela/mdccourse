@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Request Failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Request Failed: " + error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
         );
