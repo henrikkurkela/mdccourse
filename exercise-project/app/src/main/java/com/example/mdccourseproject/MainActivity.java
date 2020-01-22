@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position).getHeadline() + " on row number " + position, Toast.LENGTH_SHORT).show();
         Intent displayNewsDetail = new Intent(getApplicationContext(), DetailActivity.class);
         displayNewsDetail.putExtra("headline", adapter.getItem(position).getHeadline());
         displayNewsDetail.putExtra("url", adapter.getItem(position).getUrl());

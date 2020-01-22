@@ -1,0 +1,8 @@
+COMPLETE:
+
+"As a user I can see the headlines of news items in YLE RSS feed"
+"As a user I can pick a news story by headline and read the story"
+"As a user I can click a link that takes me to the YLE page for the news story"
+"As a user I can refresh the list of news items from YLE RSS feed"
+
+BACKLOG:

@@ -25,8 +25,8 @@
                 android:id="@+id/headlineTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="2sp"
-                android:paddingVertical="2sp"
+                android:paddingHorizontal="6sp"
+                android:paddingVertical="6sp"
                 android:text="TextView"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
@@ -35,8 +35,8 @@
                 android:id="@+id/textTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="2sp"
-                android:paddingVertical="2sp"
+                android:paddingHorizontal="6sp"
+                android:paddingVertical="6sp"
                 android:text="TextView"
                 android:textColor="@android:color/black" />
 
@@ -44,10 +44,10 @@
                 android:id="@+id/linkTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="2sp"
-                android:paddingVertical="2sp"
-                android:text="TextView"
                 android:autoLink="web"
+                android:paddingHorizontal="6sp"
+                android:paddingVertical="6sp"
+                android:text="TextView"
                 android:textColor="@android:color/black" />
         </LinearLayout>
     </ScrollView>
