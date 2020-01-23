@@ -25,8 +25,8 @@
                 android:id="@+id/headlineTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="6sp"
-                android:paddingVertical="6sp"
+                android:paddingHorizontal="10sp"
+                android:paddingVertical="10sp"
                 android:text="TextView"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
@@ -35,8 +35,8 @@
                 android:id="@+id/textTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="6sp"
-                android:paddingVertical="6sp"
+                android:paddingHorizontal="10sp"
+                android:paddingVertical="10sp"
                 android:text="TextView"
                 android:textColor="@android:color/black" />
 
@@ -45,8 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:paddingHorizontal="6sp"
-                android:paddingVertical="6sp"
+                android:paddingHorizontal="10sp"
+                android:paddingVertical="10sp"
                 android:text="TextView"
                 android:textColor="@android:color/black" />
         </LinearLayout>

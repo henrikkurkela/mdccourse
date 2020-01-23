@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                         String DESCRIPTION = "encoded";
                         String LINK = "link";
 
+                        ArrayList<AdapterData> tempNewsItems = new ArrayList<>();
                         AdapterData item = new AdapterData("NULL", "NULL", "NULL");
 
                         /* Parse the XML data according to https://developer.android.com/reference/org/xmlpull/v1/XmlPullParser
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                                 } else if (eventType == XmlPullParser.END_TAG) {
                                     if (item.getHeadline() != "NULL" && item.getText() != "NULL" && item.getUrl() != "NULL") {
                                         Log.i("Added", item.toString());
-                                        newsItems.add(item);
+                                        tempNewsItems.add(item);
                                         item = new AdapterData("NULL", "NULL", "NULL");;
                                     }
 
@@ -116,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
+                        newsItems.clear();
+                        newsItems.addAll(tempNewsItems);
+                        tempNewsItems.clear();
                         adapter.notifyDataSetChanged();
                     }
                 },
@@ -137,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newsItems.clear();
                 queue.add(request);
             }
         });
