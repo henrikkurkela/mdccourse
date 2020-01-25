@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                                     if (item.getHeadline() != "NULL" && item.getText() != "NULL" && item.getUrl() != "NULL") {
                                         Log.i("Added", item.toString());
                                         tempNewsItems.add(item);
-                                        item = new AdapterData("NULL", "NULL", "NULL");;
+                                        item = new AdapterData("NULL", "NULL", "NULL");
+                                        ;
                                     }
 
                                 } else if (eventType == XmlPullParser.TEXT) {
@@ -152,9 +153,5 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         displayNewsDetail.putExtra("url", adapter.getItem(position).getUrl());
         displayNewsDetail.putExtra("text", adapter.getItem(position).getText());
         startActivity(displayNewsDetail);
-    }
-
-    public void refreshData() {
-
     }
 }
